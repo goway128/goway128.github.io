@@ -424,7 +424,7 @@ zh: &DEFAULT_ZH_CN
   results_found              : "条记录匹配"
   back_to_top                : "返回顶部"
 zh-CN:
-  <<: *DEFAULT_ZH_HANS
+  <<: *DEFAULT_ZH_CN
 zh-SG:
   <<: *DEFAULT_ZH_HANS
 # Taiwan (Traditional Chinese)
