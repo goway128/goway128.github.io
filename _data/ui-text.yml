@@ -51,6 +51,7 @@ en: &DEFAULT_EN
   results_found              : "Result(s) found"
   back_to_top                : "Back to top"
 en-US:
+  <<: *DEFAULT_EN
   skip_links                 : "跳过链接"
   skip_primary_nav           : "跳至主导航"
   skip_content               : "跳至内容"
