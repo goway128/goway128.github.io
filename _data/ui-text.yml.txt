@@ -426,7 +426,7 @@ zh: &DEFAULT_ZH_CN
 zh-CN:
   <<: *DEFAULT_ZH_CN
 zh-SG:
-  <<: *DEFAULT_ZH_HANS
+  <<: *DEFAULT_ZH_CN
 # Taiwan (Traditional Chinese)
 zh-TW: &DEFAULT_ZH_HANT
   skip_links                 : "跳過連結"
@@ -477,7 +477,7 @@ zh-TW: &DEFAULT_ZH_HANT
   results_found              : "找到結果"
   back_to_top                : "回到頁首"
 zh-HK:
-  <<: *DEFAULT_ZH_HANT
+  <<: *DEFAULT_ZH_CN
 
 # German / Deutsch
 # ----------------
