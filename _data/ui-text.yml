@@ -456,4 +456,20 @@ zh-TW: &DEFAULT_ZH_HANT
   follow_label               : "追蹤："
   feed_label                 : "訂閱 Feed"
   powered_by                 : "採用技術："
-  website_label         
+  website_label              
+zh-CN: &DEFAULT_ZH
+  less_than                  : "不到"
+  minute_read                : "分钟阅读"
+  recent_posts               : "最新文章"
+  tags_label                 : "标签："
+  categories_label           : "分类："
+  date_label                 : "更新于："
+  related_label              : "相关文章"
+  more_label                 : "了解更多"
+  back_to_top                : "回到顶部"
+  pagination_previous        : "上一页"
+  pagination_next            : "下一页"
+  search_placeholder_text    : "搜索..."
+  results_found              : "条结果"
+zh:
+  <<: *DEFAULT_ZH
