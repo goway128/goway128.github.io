@@ -256,12 +256,12 @@
     <!-- 星辰 UI 侧边栏 -->
     <aside class="xingchen-sidebar" id="xingchenSidebar">
       <a href="{{ '/' | relative_url }}" class="xingchen-logo">{{ site.title | default: "星辰" }}</a>
-      <ul class="xingchen-nav">
-        <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>🏠 首页</a></li>
-        <li><a href="{{ '/posts/' | relative_url }}" {% if page.url contains '/posts/' %}class="active"{% endif %}>📝 文章</a></li>
-        <li><a href="{{ '/categories/' | relative_url }}" {% if page.url contains '/categories/' %}class="active"{% endif %}>🗂 分类</a></li>
-        <li><a href="{{ '/tags/' | relative_url }}" {% if page.url contains '/tags/' %}class="active"{% endif %}>🏷 标签</a></li>
-        <li><a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about/' %}class="active"{% endif %}>🌌 关于</a></li>
+      <ul class="xingchen-nav" id="xingchenNav">
+        <li><a href="{{ '/' | relative_url }}">🏠 首页</a></li>
+        <li><a href="{{ '/year-archive/' | relative_url }}">📝 文章</a></li>
+        <li><a href="{{ '/categories/' | relative_url }}">🗂 分类</a></li>
+        <li><a href="{{ '/tags/' | relative_url }}">🏷 标签</a></li>
+        <li><a href="{{ '/about/' | relative_url }}">🌌 关于</a></li>
       </ul>
     </aside>
 
@@ -307,7 +307,17 @@
           observer.observe(el);
         });
 
-      // ── 移动端侧边栏 ──
+      // ── 侧边栏当前页高亮（用 JS 判断，避免多个同时亮）──
+      const currentPath = window.location.pathname;
+      document.querySelectorAll('#xingchenNav a').forEach(link => {
+        const href = link.getAttribute('href');
+        const isHome = href === '/' || href === '/index.html';
+        if (isHome && (currentPath === '/' || currentPath === '/index.html')) {
+          link.classList.add('active');
+        } else if (!isHome && href && currentPath.startsWith(href)) {
+          link.classList.add('active');
+        }
+      });
       const sidebar  = document.getElementById('xingchenSidebar');
       const overlay  = document.getElementById('overlay');
       const menuBtn  = document.getElementById('menuToggle');
@@ -323,3 +333,4 @@
     </script>
   </body>
 </html>
+
