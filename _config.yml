@@ -118,7 +118,14 @@ author:
   bio              : "青山依旧在，几度夕阳红 --《临江仙·滚滚长江东逝水》"
   # fediverse      : "@you@instance.social"  # used for fediverse:creator meta ta
 
-
+footer:
+  text: "Made with ❤️"   # 这行会显示在 footer 最上方
+  links:                 # 这里可以放图标链接（可选）
+    - label: "GitHub"
+      url: "https://github.com/goway128/goway128.github.io"
+      icon: "fab fa-github"
+    # 你可以继续添加其他链接
+    
 # Reading Files
 include:
   - .htaccess
