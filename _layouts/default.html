@@ -68,6 +68,8 @@
         border-radius: 14px;
         transition: all 0.25s;
         font-size: 0.95rem;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
       }
       .xingchen-nav a:hover,
       .xingchen-nav a.active {
@@ -197,7 +199,8 @@
         display: none;
         position: fixed;
         top: 16px;
-        left: 16px;
+        right: 16px;
+        left: auto;
         z-index: 200;
         background: rgba(168, 85, 247, 0.2);
         border: 1px solid rgba(168, 85, 247, 0.4);
@@ -207,6 +210,9 @@
         font-size: 1.2rem;
         cursor: pointer;
         backdrop-filter: blur(10px);
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+        user-select: none;
       }
       .xingchen-overlay {
         display: none;
