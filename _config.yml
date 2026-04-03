@@ -119,31 +119,7 @@ author:
   bio              : "青山依旧在，几度夕阳红 --《临江仙·滚滚长江东逝水》"
   location         : "Somewhere"
   email            :
-  # fediverse      : "@you@instance.social"  # used for fediverse:creator meta tag
-
-# Site Footer
-footer:
-  links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-square-x-twitter"
-      # url:
-      # rel: "me"  # optional: adds rel attribute (e.g. for IndieWeb web sign-in)
-    - label: "Facebook"
-      icon: "fab fa-fw fa-square-facebook"
-      # url:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      # url:
-    - label: "GitLab"
-      icon: "fab fa-fw fa-gitlab"
-      # url:
-    - label: "Bitbucket"
-      icon: "fab fa-fw fa-bitbucket"
-      # url:
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      # url:
-  since: "2013"
+  # fediverse      : "@you@instance.social"  # used for fediverse:creator meta ta
 
 
 # Reading Files
