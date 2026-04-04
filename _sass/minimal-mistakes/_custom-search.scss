@@ -1,0 +1,98 @@
+.custom-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+
+  #custom-search-input {
+    width: 150px;
+    padding: 5px 14px;
+    border: 1.5px solid #ccc;
+    border-radius: 20px;
+    font-size: 13px;
+    outline: none;
+    background: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: #aaa;
+    }
+
+    &:focus {
+      width: 210px;
+      border-color: #0092ca;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 146, 202, 0.15);
+    }
+  }
+
+  #custom-search-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 300px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    z-index: 99999;
+
+    a {
+      display: block;
+      padding: 10px 16px;
+      color: #333;
+      text-decoration: none;
+      font-size: 13px;
+      border-bottom: 1px solid #f2f2f2;
+      transition: background 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background: #f0f8ff;
+        color: #0092ca;
+      }
+
+      mark {
+        background: #fff3cd;
+        color: #e67e00;
+        border-radius: 2px;
+        padding: 0 2px;
+        font-weight: bold;
+      }
+    }
+
+    .no-results {
+      padding: 14px 16px;
+      color: #999;
+      font-size: 13px;
+      text-align: center;
+    }
+  }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+  .custom-search-wrapper {
+    #custom-search-input {
+      width: 110px;
+      font-size: 12px;
+
+      &:focus {
+        width: 150px;
+      }
+    }
+
+    #custom-search-results {
+      width: 240px;
+      right: -40px;
+    }
+  }
+}
+
