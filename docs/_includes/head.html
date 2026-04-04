@@ -1,0 +1,190 @@
+<style>
+  .lang-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    margin: 16px 20px 0;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .lang-switch-btn:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+  }
+
+  .lang-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .lang-modal-content {
+    background: #111;
+    width: 92%;
+    max-width: 380px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+  .lang-modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .lang-option {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-option:hover { background: rgba(255,255,255,0.08); }
+  .lang-option:last-child { border-bottom: none; }
+  .lang-option .icon { font-size: 28px; }
+  .lang-option .info h4 { margin: 0; font-size: 16px; color: #fff; }
+  .lang-option .info p { margin: 2px 0 0; font-size: 13px; color: #aaa; }
+  .lang-option.selected { background: rgba(139, 92, 246, 0.15); }
+  .lang-option .check { margin-left: auto; color: #8b5cf6; font-size: 22px; }
+</style>
+
+<script>
+  // 语言映射表
+  const translations = {
+    nav: {
+      '首页': 'Home',
+      '分类': 'Categories',
+      '标签': 'Tags',
+      '关于': 'About'
+    },
+    recent: {
+      '最新文章': 'Recent Posts'
+    },
+    related: {
+      '猜您还喜欢': 'You may also enjoy'
+    },
+    button: {
+      '🌐 切换语言': '🌐 Switch Language'
+    }
+  };
+
+  function applyTranslations(lang) {
+    // 1. 侧边栏菜单
+    document.querySelectorAll('.nav__list a').forEach(link => {
+      const current = link.textContent.trim();
+      if (translations.nav[current]) {
+        link.textContent = lang === 'zh' ? current : translations.nav[current];
+      }
+    });
+
+    // 2. 最新文章标题
+    document.querySelectorAll('h3, h4, .archive__title').forEach(el => {
+      const text = el.textContent.trim();
+      if (translations.recent[text]) {
+        el.textContent = lang === 'zh' ? text : translations.recent[text];
+      }
+    });
+
+    // 3. 阅读时间（少于 X 分钟阅读）
+    document.querySelectorAll('.page__meta, .archive__item, span').forEach(el => {
+      if (el.textContent.includes('分钟阅读')) {
+        el.textContent = el.textContent.replace(
+          /少于\s*(\d+)\s*分钟阅读/,
+          lang === 'zh' ? '少于 $1 分钟阅读' : 'Less than $1 minute read'
+        );
+      }
+    });
+
+    // 4. 猜您还喜欢
+    document.querySelectorAll('h3, h4, .related__title').forEach(el => {
+      const text = el.textContent.trim();
+      if (translations.related[text]) {
+        el.textContent = lang === 'zh' ? text : translations.related[text];
+      }
+    });
+
+    // 5. 切换语言按钮
+    const btn = document.querySelector('.lang-switch-btn');
+    if (btn) {
+      const currentBtn = btn.textContent.trim();
+      btn.textContent = lang === 'zh' ? '🌐 切换语言' : translations.button['🌐 切换语言'];
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const savedLang = localStorage.getItem('siteLang') || 'zh';
+
+    // 插入侧边栏按钮
+    const navList = document.querySelector('.nav__list');
+    if (navList) {
+      const btnHTML = `<div class="lang-switch-btn" onclick="showLangModal()">🌐 切换语言</div>`;
+      navList.insertAdjacentHTML('afterend', btnHTML);
+    }
+
+    // 创建弹窗
+    const modalHTML = `
+      <div class="lang-modal" id="langModal">
+        <div class="lang-modal-content">
+          <div class="lang-modal-header">🌐 语言设置</div>
+          
+          <div class="lang-option ${savedLang==='zh'?'selected':''}" onclick="switchLanguage('zh')">
+            <span class="icon">🇨🇳</span>
+            <div class="info">
+              <h4>中文</h4>
+              <p>简体中文（UI 标签）</p>
+            </div>
+            <span class="check">✔</span>
+          </div>
+          
+          <div class="lang-option ${savedLang==='en'?'selected':''}" onclick="switchLanguage('en')">
+            <span class="icon">🇬🇧</span>
+            <div class="info">
+              <h4>English</h4>
+              <p>English UI labels only</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // 立即应用保存的语言
+    applyTranslations(savedLang);
+  });
+
+  window.showLangModal = function () {
+    document.getElementById('langModal').style.display = 'flex';
+  };
+
+  window.switchLanguage = function (lang) {
+    const modal = document.getElementById('langModal');
+    modal.style.display = 'none';
+
+    localStorage.setItem('siteLang', lang);
+    applyTranslations(lang);
+
+    // 更新弹窗选中状态
+    document.querySelectorAll('.lang-option').forEach(opt => {
+      opt.classList.toggle('selected', opt.getAttribute('onclick').includes(`'${lang}'`));
+    });
+  };
+
+  // 点击空白处关闭弹窗
+  document.addEventListener('click', function (e) {
+    const modal = document.getElementById('langModal');
+    if (modal && e.target === modal) modal.style.display = 'none';
+  });
+</script>
