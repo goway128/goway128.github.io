@@ -426,7 +426,7 @@ zh: &DEFAULT_ZH_CN
 zh-CN:
   <<: *DEFAULT_ZH_CN
 zh-SG:
-  <<: *DEFAULT_ZH_HANS
+  <<: *DEFAULT_ZH_CN
 # Taiwan (Traditional Chinese)
 zh-TW: &DEFAULT_ZH_HANT
   skip_links                 : "跳過連結"
