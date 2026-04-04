@@ -25,5 +25,6 @@
 {% if site.after_footer_scripts %}
   {% for script in site.after_footer_scripts %}
     <script src="{{ script | relative_url }}"></script>
+    <script src="{{ '/assets/js/title-search.js' | relative_url }}"></script>
   {% endfor %}
 {% endif %}
