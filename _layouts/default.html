@@ -244,14 +244,109 @@
         .page__footer { margin-left: 0; padding: 20px; }
         h1 { font-size: 1.8rem; }
       }
+
+            /* ── 自定义搜索框样式 ── */
+      .custom-search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-right: 8px;
+      }
+
+      #custom-search-input {
+        width: 150px;
+        padding: 5px 14px;
+        border: 1.5px solid rgba(255,255,255,0.2);
+        border-radius: 20px;
+        font-size: 13px;
+        outline: none;
+        background: rgba(255,255,255,0.08);
+        color: #e0e7ff;
+        transition: all 0.3s ease;
+      }
+
+      #custom-search-input::placeholder {
+        color: #7c88b0;
+      }
+
+      #custom-search-input:focus {
+        width: 210px;
+        border-color: var(--accent);
+        background: rgba(255,255,255,0.12);
+        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+      }
+
+      #custom-search-results {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 300px;
+        max-height: 320px;
+        overflow-y: auto;
+        background: rgba(15, 15, 35, 0.97);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        z-index: 99999;
+      }
+
+      #custom-search-results a {
+        display: block;
+        padding: 10px 16px;
+        color: #c4d0ff !important;
+        text-decoration: none;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        transition: background 0.2s;
+      }
+
+      #custom-search-results a:last-child {
+        border-bottom: none;
+      }
+
+      #custom-search-results a:hover {
+        background: rgba(168, 85, 247, 0.2);
+        color: white !important;
+      }
+
+      #custom-search-results a mark {
+        background: rgba(34, 211, 238, 0.3);
+        color: var(--accent);
+        border-radius: 2px;
+        padding: 0 2px;
+        font-weight: bold;
+      }
+
+      #custom-search-results .no-results {
+        padding: 14px 16px;
+        color: #7c88b0;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        .custom-search-wrapper {
+          display: none; /* 移动端隐藏搜索框 */
+        }
+      }
+
+      
     </style>
   </head>
 
-  <script src="{{ '/assets/js/custom-search.js' | relative_url }}"></script>
 
 
   
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
+
+
+    
+  <script src="{{ '/assets/js/custom-search.js' | relative_url }}"></script>
+
+
+    
 
     {% include_cached skip-links.html locale=locale %}
     <!-- 原版 masthead 保留但被 CSS 隐藏，Jekyll 内部功能不受影响 -->
@@ -295,6 +390,15 @@
 
     {% include scripts.html locale=locale %}
 
+    {% include scripts.html locale=locale %}
+    
+    <script src="{{ '/assets/js/custom-search.js' | relative_url }}"></script>
+
+    <script>
+      
+      // ── IntersectionObserver 动画 ──
+
+    
     <script>
       // ── IntersectionObserver 动画 ──
       const observer = new IntersectionObserver(entries => {
@@ -314,7 +418,7 @@
           observer.observe(el);
         });
 
-      // ── 侧边栏当前页高亮（用 JS 判断，避免多个同时亮）──
+      // ── 侧边栏当前页高亮──
       const currentPath = window.location.pathname;
       document.querySelectorAll('#xingchenNav a').forEach(link => {
         const href = link.getAttribute('href');
