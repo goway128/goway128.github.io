@@ -11,7 +11,7 @@
     
           <a class="site-title" href="{{ '/' | relative_url }}">
          
-            <!-- 在 masthead.html 的导航部分添加 -->
+            
 <div class="search-wrapper" style="flex: 1; max-width: 400px; margin: 0 20px;">
   <input type="text" id="search-input" placeholder="搜索文章..." 
      style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #555; background: #1f1f1f; color: #ddd;">
@@ -51,3 +51,54 @@
     </div>
   </div>
 </div>
+
+
+<script>
+// 加载 search.json 
+let articles = [];
+
+fetch('/search.json')
+  .then(response => response.json())
+  .then(data => {
+    articles = data;
+  })
+  .catch(err => console.error('加载 search.json 失败', err));
+
+const input = document.getElementById('search-input');
+const resultsContainer = document.getElementById('search-results');
+
+input.addEventListener('input', function() {
+  const query = this.value.trim().toLowerCase();
+  resultsContainer.innerHTML = '';
+  
+  if (query.length < 1) {
+    resultsContainer.style.display = 'none';
+    return;
+  }
+
+  const filtered = articles.filter(article => 
+    article.title.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    resultsContainer.innerHTML = '<div style="padding:10px;color:#999;">没有找到匹配的文章</div>';
+  } else {
+    filtered.forEach(article => {
+      const div = document.createElement('div');
+      div.style.padding = '10px';
+      div.style.borderBottom = '1px solid #333';
+      div.innerHTML = `<a href="\( {article.url}" style="color:#88ccff;text-decoration:none;"> \){article.title}</a>`;
+      resultsContainer.appendChild(div);
+    });
+  }
+  resultsContainer.style.display = 'block';
+});
+
+// 点击
+document.addEventListener('click', function(e) {
+  if (!input.contains(e.target) && !resultsContainer.contains(e.target)) {
+    resultsContainer.style.display = 'none';
+  }
+});
+</script>
+
