@@ -3,15 +3,14 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-        <!-- 左 -->
+        <!-- 左侧标题 -->
         <a class="site-title" href="/">goway128.club</a>
 
-        <!-- ==================== 搜索框 ==================== -->
+        <!-- 搜索框 -->
         <div class="masthead-search">
           <input type="text" id="search-input" placeholder="搜索文章标题..." autocomplete="off">
           <div id="search-results" class="search-results"></div>
         </div>
-        <!-- ============================================== -->
 
         <!-- 右侧导航链接 -->
         <ul class="visible-links">
@@ -22,60 +21,85 @@
           {% endfor %}
         </ul>
 
-        <!--  -->
-        <button class="greedy-nav__toggle hidden-lg" type="button">
+        <!-- 菜单按钮 -->
+        <button class="greedy-nav__toggle hidden" type="button">
           <span class="visually-hidden">Toggle Menu</span>
           <div class="navicon"></div>
         </button>
+        <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
   </div>
 </div>
 
 <script>
-// 搜索
-let articles = [];
+// 搜索功能
+(function() {
+  let articles = [];
+  
+  // 加载搜索数据
+  fetch('/search.json')
+    .then(response => response.json())
+    .then(data => { 
+      articles = data;
+      console.log('搜索数据加载成功，共', articles.length, '篇文章');
+    })
+    .catch(err => console.error('search.json 加载失败:', err));
 
-fetch('/search.json')
-  .then(response => response.json())
-  .then(data => { articles = data; })
-  .catch(err => console.error('search.json 加载失败', err));
+  const input = document.getElementById('search-input');
+  const resultsBox = document.getElementById('search-results');
 
-const input = document.getElementById('search-input');
-const resultsBox = document.getElementById('search-results');
-
-input.addEventListener('input', function() {
-  const query = this.value.trim().toLowerCase();
-  resultsBox.innerHTML = '';
-
-  if (query.length < 1) {
-    resultsBox.style.display = 'none';
+  if (!input || !resultsBox) {
+    console.error('搜索元素未找到');
     return;
   }
 
-  const filtered = articles.filter(article => 
-    article.title.toLowerCase().includes(query)
-  );
+  // 输入事件
+  input.addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+    resultsBox.innerHTML = '';
 
-  if (filtered.length === 0) {
-    resultsBox.innerHTML = '<div class="no-result">没有找到匹配的文章</div>';
-  } else {
-    filtered.forEach(article => {
-      const div = document.createElement('div');
-      div.className = 'search-result-item';
-      div.innerHTML = `<a href="\( {article.url}"> \){article.title}</a>`;
-      resultsBox.appendChild(div);
-    });
-  }
-  resultsBox.style.display = 'block';
-});
+    if (query.length < 1) {
+      resultsBox.style.display = 'none';
+      return;
+    }
 
-// 点击
-document.addEventListener('click', function(e) {
-  if (!input.contains(e.target) && !resultsBox.contains(e.target)) {
-    resultsBox.style.display = 'none';
-  }
-});
+    // 按标题搜索
+    const filtered = articles.filter(article => 
+      article.title && article.title.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      resultsBox.innerHTML = '<div class="no-result">没有找到匹配的文章</div>';
+    } else {
+      filtered.slice(0, 10).forEach(article => {
+        const div = document.createElement('div');
+        div.className = 'search-result-item';
+        const link = document.createElement('a');
+        link.href = article.url;
+        link.textContent = article.title;
+        div.appendChild(link);
+        resultsBox.appendChild(div);
+      });
+    }
+    resultsBox.style.display = 'block';
+  });
+
+  // 点击
+  document.addEventListener('click', function(e) {
+    if (!input.contains(e.target) && !resultsBox.contains(e.target)) {
+      resultsBox.style.display = 'none';
+    }
+  });
+
+  // ESC 键关闭
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      resultsBox.style.display = 'none';
+      input.value = '';
+    }
+  });
+})();
 </script>
 
 <style>
@@ -91,26 +115,31 @@ document.addEventListener('click', function(e) {
   padding: 10px 14px;
   border: 1px solid #555;
   border-radius: 6px;
-  background: #1f1f2e;
+  background: rgba(31, 31, 46, 0.8);
   color: #eee;
   font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+#search-input::placeholder {
+  color: #888;
 }
 
 #search-input:focus {
   border-color: #7eb6ff;
   outline: none;
+  background: rgba(31, 31, 46, 0.95);
 }
 
 .search-results {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
   background: #1f1f2e;
   border: 1px solid #444;
   border-radius: 6px;
-  margin-top: 4px;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   z-index: 999;
   display: none;
@@ -120,29 +149,68 @@ document.addEventListener('click', function(e) {
 .search-result-item {
   padding: 11px 14px;
   border-bottom: 1px solid #333;
+  transition: background 0.2s ease;
 }
 
-.search-result-item:last-child { border-bottom: none; }
+.search-result-item:last-child { 
+  border-bottom: none; 
+}
+
+.search-result-item:hover {
+  background: rgba(126, 182, 255, 0.1);
+}
 
 .search-result-item a {
   color: #a0d0ff;
   text-decoration: none;
+  display: block;
 }
 
-.search-result-item a:hover { color: white; }
+.search-result-item a:hover { 
+  color: white; 
+}
 
-.no-result { padding: 12px; color: #888; }
+.no-result { 
+  padding: 12px; 
+  color: #888; 
+  text-align: center;
+}
 
-/* 移动端 */
+/* 移动端适配 */
 @media (max-width: 1023px) {
   .masthead-search {
     margin: 12px auto;
     max-width: 92%;
     order: -1;
   }
+  
   .greedy-nav { 
     flex-direction: column; 
-    align-items: center; 
+    align-items: stretch; 
+  }
+  
+  .site-title {
+    text-align: center;
+    margin-bottom: 10px;
   }
 }
+
+/* 滚动条 */
+.search-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+  background: #1a1a28;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 </style>
+
