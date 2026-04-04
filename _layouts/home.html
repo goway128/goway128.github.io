@@ -7,11 +7,17 @@ layout: archive
 
 <h3 class="archive__subtitle">{{ site.data.ui-text[locale].recent_posts | default: "Recent Posts" }}</h3>
 
-{% if paginator %}
-  {% assign posts = paginator.posts %}
-{% else %}
-  {% assign posts = site.posts %}
-{% endif %}
+<!-- 置顶文章 -->
+{% assign sticky_posts = site.posts | where: "sticky", true %}
+{% for post in sticky_posts %}
+  {% include archive-single.html type=page.archive_type %}
+{% endfor %}
+
+<!-- 按日期倒序）-->
+{% assign normal_posts = site.posts | where_exp: "post", "post.sticky != true" %}
+{% for post in normal_posts %}
+  {% include archive-single.html type=page.archive_type %}
+{% endfor %}
 
 {% assign entries_layout = page.entries_layout | default: 'list' %}
 <div class="entries-{{ entries_layout }}">
