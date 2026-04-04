@@ -1,30 +1,28 @@
-{% include base_path %}
-
 <div class="masthead">
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-        <!-- 标题 -->
-        <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title | default: site.github.repository_name }}</a>
+        <!-- 左 -->
+        <a class="site-title" href="/">goway128.club</a>
 
         <!-- ==================== 搜索框 ==================== -->
         <div class="masthead-search">
           <input type="text" id="search-input" placeholder="搜索文章标题..." autocomplete="off">
           <div id="search-results" class="search-results"></div>
         </div>
-        <!-- ================================================================== -->
+        <!-- ============================================== -->
 
-        <!-- 右侧链接 -->
+        <!-- 右侧导航链接 -->
         <ul class="visible-links">
           {% for link in site.data.navigation.main %}
             <li class="masthead__menu-item">
-              <a href="{{ link.url | relative_url }}">{{ link.title }}</a>
+              <a href="{{ link.url }}">{{ link.title }}</a>
             </li>
           {% endfor %}
         </ul>
 
-        <!-- 菜单 -->
+        <!--  -->
         <button class="greedy-nav__toggle hidden-lg" type="button">
           <span class="visually-hidden">Toggle Menu</span>
           <div class="navicon"></div>
@@ -35,12 +33,13 @@
 </div>
 
 <script>
-// 加载
+// 搜索
 let articles = [];
-fetch('{{ "/search.json" | relative_url }}')
+
+fetch('/search.json')
   .then(response => response.json())
   .then(data => { articles = data; })
-  .catch(err => console.error("search.json 加载失败", err));
+  .catch(err => console.error('search.json 加载失败', err));
 
 const input = document.getElementById('search-input');
 const resultsBox = document.getElementById('search-results');
@@ -141,6 +140,9 @@ document.addEventListener('click', function(e) {
     max-width: 92%;
     order: -1;
   }
-  .greedy-nav { flex-direction: column; align-items: center; }
+  .greedy-nav { 
+    flex-direction: column; 
+    align-items: center; 
+  }
 }
 </style>
