@@ -8,7 +8,20 @@
         {% unless logo_path == empty %}
           <a class="site-logo" href="{{ '/' | relative_url }}"><img src="{{ logo_path | relative_url }}" alt="{{ site.masthead_title | default: site.title }}"></a>
         {% endunless %}
-        <a class="site-title" href="{{ '/' | relative_url }}">
+    
+          <a class="site-title" href="{{ '/' | relative_url }}">
+         
+            <!-- 在 masthead.html 的导航部分添加 -->
+<div class="search-wrapper" style="flex: 1; max-width: 400px; margin: 0 20px;">
+  <input type="text" id="search-input" placeholder="搜索文章..." 
+     style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #555; background: #1f1f1f; color: #ddd;">
+  <div id="search-results" style="position: absolute; background: #1f1f1f; border: 1px solid #444; width: 100%; max-height: 300px; overflow-y: auto; display: none; z-index: 1000;"></div>
+</div>
+          
+         
+          
+          
+          
           {{ site.masthead_title | default: site.title | escape_once | strip }}
           {% if site.subtitle %}<span class="site-subtitle">{{ site.subtitle | escape_once | strip }}</span>{% endif %}
         </a>
